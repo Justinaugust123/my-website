@@ -4,10 +4,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-               git branch: 'main',
-    url: 'https://github.com/Justinaugust123/my-website.git'
-            }
-        }
+        checkout scm
+    }
+}
 
         stage('Build Docker Image') {
             steps {
