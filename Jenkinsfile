@@ -3,13 +3,13 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-user-pass')
-        IMAGE_NAME = "yourdockerhubusername/myapp"
+        IMAGE_NAME = "myweb:tagname/myapp"
     }
 
     stages {
         stage('Clone Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/yourusername/yourrepo.git'
+                git branch: 'main', url: 'https://github.com/Justinaugust123/my-website.git'
             }
         }
 
