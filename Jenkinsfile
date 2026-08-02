@@ -1,26 +1,39 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-        checkout scm
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-user-pass')
+        IMAGE_NAME = "yourdockerhubusername/myapp"
     }
-}
+
+    stages {
+        stage('Clone Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/yourusername/yourrepo.git'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-website .'
+                script {
+                    sh 'docker build -t $IMAGE_NAME:latest .'
+                }
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                script {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker push $IMAGE_NAME:latest'
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
-                docker stop website || true
-                docker rm website || true
-                docker run -d --name website -p 80:80 my-website
-                '''
+                echo 'Deploying container...'
+                // You can add Kubernetes or Docker run command here
             }
         }
     }
