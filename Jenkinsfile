@@ -1,39 +1,30 @@
 pipeline {
+
     agent any
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-user-pass')
-        IMAGE_NAME = "my-website:latest/myweb"
-    }
-
     stages {
-        stage('Clone Code') {
+
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Justinaugust123/my-website.git'
+                checkout scm
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                script {
-                    sh 'docker build -t $IMAGE_NAME:latest .'
-                }
-            }
-        }
-
-        stage('Push to DockerHub') {
-            steps {
-                script {
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    sh 'docker push $IMAGE_NAME:latest'
-                }
+                sh 'docker compose build'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying container...'
-                // You can add Kubernetes or Docker run command here
+                sh 'docker compose up -d'
+            }
+        }
+
+        stage('Verify') {
+            steps {
+                sh 'docker ps'
             }
         }
     }
