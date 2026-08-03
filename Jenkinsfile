@@ -1,42 +1,26 @@
 pipeline {
-
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/your-username/my-website.git'
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh '''
-                if command -v docker-compose >/dev/null 2>&1; then
-                    docker-compose build
-                else
-                    docker compose build
-                fi
-                '''
+                sh 'docker build -t my-website .'
             }
         }
 
         stage('Deploy') {
             steps {
                 sh '''
-                if command -v docker-compose >/dev/null 2>&1; then
-                    docker-compose up -d
-                else
-                    docker compose up -d
-                fi
+                docker stop website || true
+                docker rm website || true
+                docker run -d --name website -p 80:80 my-website
                 '''
-            }
-        }
-
-        stage('Verify') {
-            steps {
-                sh 'docker ps'
             }
         }
     }
