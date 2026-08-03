@@ -2,25 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repo') {
             steps {
                 git 'https://github.com/Justinaugust123/my-website.git'
             }
         }
-
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                sh 'docker build -t my-website .'
+                echo 'Building the app...'
             }
         }
-
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+            }
+        }
         stage('Deploy') {
             steps {
-                sh '''
-                docker stop website || true
-                docker rm website || true
-                docker run -d --name website -p 80:80 my-website
-                '''
+                echo 'Deploying application...'
             }
         }
     }
