@@ -12,13 +12,25 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'docker compose build'
+                sh '''
+                if command -v docker-compose >/dev/null 2>&1; then
+                    docker-compose build
+                else
+                    docker compose build
+                fi
+                '''
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker compose up -d'
+                sh '''
+                if command -v docker-compose >/dev/null 2>&1; then
+                    docker-compose up -d
+                else
+                    docker compose up -d
+                fi
+                '''
             }
         }
 
