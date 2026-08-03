@@ -2,25 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
+        stage('build') {
             steps {
-                git 'https://github.com/Justinaugust123/my-website.git'
+                echo 'Hello World 111'
             }
         }
-        stage('Build') {
+        stage('test') {
             steps {
-                echo 'Building the app...'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-            }
+                echo 'Hello World test222'
+            }    
         }
     }
 }
