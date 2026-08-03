@@ -2,21 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/Justinaugust123/my-website.git'
-            }
-        }
+
         stage('Build') {
             steps {
-                echo 'Building the app...'
+                echo 'Building the application...'
+                sh 'pwd'
+                sh 'ls -la'
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
             }
         }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
