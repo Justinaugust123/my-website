@@ -1,29 +1,16 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-user-pass')
-        IMAGE_NAME = "justinaugust123/my-website:latest"
-    }
-
     stages {
-        stage('Build Docker Image') {
+        stage('build') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:latest .'
+                echo 'Hello World 111'
             }
         }
-
-        stage('Push to DockerHub') {
+        stage('test') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push $IMAGE_NAME:latest'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-            }
+                echo 'Hello World test222'
+            }    
         }
     }
 }
